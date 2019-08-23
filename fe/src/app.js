@@ -288,7 +288,6 @@ const {
           //_.channels.push([d[0], d[1]]);
 	}
 	catch (e) {
-		console.log(data[txid], e);
           _.messages[channel].push(data[txid]);
 	}
       }
