@@ -184,7 +184,7 @@ const {
     const utxos = _.addressData[address.toString()].utxo.map(u => ({txId: u.transaction_hash, outputIndex: u.index, satoshis: u.value, script: _.addressData[address.toString()].address.script_hex}));
     const fee = 284;
     const transaction = createDataTransaction(
-	    roots[0], 
+	    _.selectedChannel, 
 	    privateKey, 
 	    lzs.compressToUTF16(_.newMessageInput), 
 	    fee, 
@@ -244,7 +244,8 @@ const {
       for (let id in transactions) {
         const transaction = transactions[id];
         for (let output of transaction.outputs) {
-          if (roots[0].toString() === `bitcoincash:${output.recipient}`) continue;
+          //if (roots[0].toString() === `bitcoincash:${output.recipient}`) continue;
+          if (_.selectedChannel.toString() === `bitcoincash:${output.recipient}`) continue;
 /*
         if (output.script_hex.indexOf('6a') === 0) {
           const message = lzs.decompress(new Buffer(output.script_hex.substr(8), 'hex').toString());
