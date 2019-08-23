@@ -264,8 +264,6 @@ const {
               message = chunk.buf.toString();
 	    }
           
-	    console.log({message});
-
 	    let decompressedMessage = lzs.decompressFromUTF16(message);
 
             try {
@@ -278,15 +276,12 @@ const {
 	    }
 
 	    storeTransactionMessage(id, decompressedMessage);
-		
-	    console.log(output.script_hex, script.getData().toString(), decompressedMessage, script);
 	  }
 	}   //console.log(script, script.isDataOut(), output, script.toString());
       }
     }
     else {
       for (let txid in data) {
-	      console.log('txid', txid, data);
         try {
           const d = JSON.parse(data[txid]);
           _.channels[d[0]] = {name: d[1], id: d[0]};
@@ -395,7 +390,6 @@ const Viewer = ({channel}, {channelBalance, compressedNewMessageInput, newMessag
 const SideBySide = ({selectedChannel}) => (
   <side-by-side>
     <Addresses />
-	{console.log(selectedChannel)}
     <Viewer channel={selectedChannel} />
   </side-by-side>
 );
