@@ -159,7 +159,7 @@ const {
     _.mutation = mutation;
 
     _.messages = {};
-    _.channels = [];
+    _.channels = {};
 
     _.channels[roots[0]] = {name: 'root', id: roots[0]};
 
