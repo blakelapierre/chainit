@@ -2,6 +2,8 @@ import { h, render } from 'preact-cycle';
 import bch from 'bitcore-lib-cash';
 import lzs from 'lz-string';
 
+import { CodeRunner } from './code-runner';
+
 const roots = ['bitcoincash:qqqqe3jhn7wu6t6nj5gq5z0y3pgsycd8h5jng9r3e7'];
 
 function init() {
@@ -383,6 +385,7 @@ const Viewer = ({channel}, {channelBalance, compressedNewMessageInput, newMessag
     <button onClick={mutation(SEND_TRANSACTION)}>Send</button>
     <div>{compressedNewMessageInput}</div>
     <div>{compressedNewMessageInput ? new Blob([compressedNewMessageInput]).size : '0'} / 240</div>
+    <CodeRunner code="alert('test')" />
   </viewer>
 );
 
