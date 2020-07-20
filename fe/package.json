@@ -41,7 +41,7 @@
     "gulp-sourcemaps": "^2.6.1",
     "gulp-tasks": "0.0.2",
     "gulp-tslint": "^8.1.2",
-    "gulp-uglify": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
     "gulp.spritesmith": "^6.5.1",
     "less-plugin-autoprefix": "^1.5.1",

@@ -182,6 +182,12 @@ const {
     if (_.compressedNewMessageInput.length > 240) return;
 
     const utxos = _.addressData[address.toString()].utxo.map(u => ({txId: u.transaction_hash, outputIndex: u.index, satoshis: u.value, script: _.addressData[address.toString()].address.script_hex}));
+    
+    if (utxos.length === 0) {
+      alert('no utxos!!');
+      return _;
+    }
+
     const fee = 284;
     const transaction = createDataTransaction(
 	    _.selectedChannel, 
@@ -224,6 +230,8 @@ const {
       const channelKey = createChannel();
       const utxos = _.addressData[address.toString()].utxo.map(u => ({txId: u.transaction_hash, outputIndex: u.index, satoshis: u.value, script: _.addressData[address.toString()].address.script_hex}));
 
+      if (utxos.length === 0) return new Error('not enough utxos (0)');
+      
       sendTransaction(createDataTransaction(roots[0], privateKey, lzs.compressToUTF16(JSON.stringify([channelKey.toAddress().toString(), name])), 285, utxos))
         .then(result => result.json())
         .then(json => console.log('broadcasted create', result))
@@ -363,7 +371,8 @@ const Addresses = ({}, {privateKey, channels, addressData, data, mutation}) => (
 
 const Transaction = ({transaction}, {}) => (
   <transaction>
-    {transaction.outputs.map(output => `bitcoincash:${output.recipient}` === privateKey.toAddress().toString() ? undefined : <div>{output.recipient}{lzs.decompress(output.recipient)}</div>)}
+    {transaction.outputs.map(output => `bitcoincash:${output.recipient}` === privateKey.toAddress().toString() ? undefined 
+                                                                                                               : <div>{output.recipient}{lzs.decompress(output.recipient)}</div>)}
   </transaction>
 );
 
@@ -377,8 +386,9 @@ const Channel = ({channel}, {mutation}) => (
 
 const Viewer = ({channel}, {channelBalance, compressedNewMessageInput, newMessageInput, messages, transactions, channels, addressData, mutation}) => (
   <viewer>
-    <channel-id>{channel}</channel-id><channel-balance>{addressData[channel] ? addressData[channel].address.balance : 'waiting for balance'}</channel-balance>
-    {!messages ? undefined : messages[channel].map(message => <Message message={message} />)}
+    <channel-id>Channel Address: {channel}</channel-id>
+    <channel-balance>Channel Balance: {addressData[channel] ? addressData[channel].address.balance : 'waiting for balance'}</channel-balance>
+    <messages>{!messages ? undefined : messages[channel].map(message => <Message message={message} />)}</messages>
     <textarea value={newMessageInput} onInput={mutation(SET_NEW_MESSAGE_INPUT)}></textarea>
     <button onClick={mutation(SEND_TRANSACTION)}>Send</button>
     <div>{compressedNewMessageInput}</div>
